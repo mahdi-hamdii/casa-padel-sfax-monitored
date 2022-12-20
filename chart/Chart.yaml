@@ -1,0 +1,4 @@
+apiVersion: v1
+name: Casa Padel Sfax
+description: A web application for a padel club with features of tournaments, reservations and sponsors
+version: 0.1.0

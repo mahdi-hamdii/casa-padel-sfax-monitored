@@ -1,0 +1,8 @@
+deployment:
+    replica: 1
+    imageName: mahdihamdi99/casapadelsfax
+    imageTag: latest
+    httpPort: 3000
+mongodb:
+    DATABASE_USER: YWRtaW4=
+    DATABASE_PASSWORD: YWRtaW4=
