@@ -106,34 +106,34 @@ export class AuthService {
     return { email: user.email, role: user.role };
   }
 
-  // google
-  async googleLogin(req) {
-    if (!req.user) {
-      return 'No user from google';
-    }
+  // // google
+  // async googleLogin(req) {
+  //   if (!req.user) {
+  //     return 'No user from google';
+  //   }
 
-    const googleUser = req.user;
-    // console.log(googleUser);
+  //   const googleUser = req.user;
+  //   // console.log(googleUser);
 
-    // check if the user is already registred by his email
-    const user = await this.usersService.findUserByEmail(googleUser.email);
+  //   // check if the user is already registred by his email
+  //   const user = await this.usersService.findUserByEmail(googleUser.email);
 
-    if (!user) {
-      // if the user login for the first time , we need to register the user without password
-      const newUser: CreateGoogleUserDto = new CreateGoogleUserDto();
-      newUser.email = googleUser.email;
-      newUser.firstname = googleUser.firstname;
-      newUser.lastname = googleUser.lastname;
-      newUser.picture = googleUser.picture;
-      newUser.role = 'u';
-      console.log(newUser);
+  //   if (!user) {
+  //     // if the user login for the first time , we need to register the user without password
+  //     const newUser: CreateGoogleUserDto = new CreateGoogleUserDto();
+  //     newUser.email = googleUser.email;
+  //     newUser.firstname = googleUser.firstname;
+  //     newUser.lastname = googleUser.lastname;
+  //     newUser.picture = googleUser.picture;
+  //     newUser.role = 'u';
+  //     console.log(newUser);
 
-      await new this.userModel(newUser).save();
-    }
+  //     await new this.userModel(newUser).save();
+  //   }
 
-    // generate and return the token
-    const payload = { email: googleUser.email, role: 'u' };
-    const accessToken = await this.jwtService.sign(payload);
-    return { accessToken };
-  }
+  //   // generate and return the token
+  //   const payload = { email: googleUser.email, role: 'u' };
+  //   const accessToken = await this.jwtService.sign(payload);
+  //   return { accessToken };
+  // }
 }

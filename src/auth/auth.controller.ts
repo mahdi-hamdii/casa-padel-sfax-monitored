@@ -11,7 +11,7 @@ import {
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
 import { AuthService } from './auth.service';
-import { GoogleAuthGuard } from './google/google-auth.guard';
+// import { GoogleAuthGuard } from './google/google-auth.guard';
 import { JwtAuthGuard } from './jwt/jwt-auth.guard';
 import { UserEmail } from './user-email.decorator';
 
@@ -39,19 +39,19 @@ export class AuthController {
     return email;
   }
 
-  // google
-  @Get('google')
-  @UseGuards(GoogleAuthGuard)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async googleAuth(@Request() req) {
-    return HttpStatus.OK;
-  }
+  // // google
+  // @Get('google')
+  // @UseGuards(GoogleAuthGuard)
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // async googleAuth(@Request() req) {
+  //   return HttpStatus.OK;
+  // }
 
-  @Get('google/redirect')
-  @UseGuards(GoogleAuthGuard)
-  googleAuthRedirect(@Request() req) {
-    return this.authService.googleLogin(req);
-  }
+  // @Get('google/redirect')
+  // @UseGuards(GoogleAuthGuard)
+  // googleAuthRedirect(@Request() req) {
+  //   return this.authService.googleLogin(req);
+  // }
 
   // // facebook
   // @Get('facebook')

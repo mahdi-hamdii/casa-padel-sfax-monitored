@@ -17,7 +17,7 @@ import { ReservationsModule } from './reservations/reservations.module';
     AuthModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-      `mongodb://admin:admin@localhost:27017`,
+      `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_LINK}`
     ),
     UsersModule,
     TournamentsModule,

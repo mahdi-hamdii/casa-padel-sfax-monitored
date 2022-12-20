@@ -1,0 +1,32 @@
+version: "3.3"
+services:
+  casapadelsfax:
+    container_name: casapadelsfax
+    build:
+      context: ./
+    command: "npm run start:dev"
+    ports:
+      - 80:3000
+    networks:
+      - casapadel
+    environment:
+      - DATABASE_USER=admin
+      - DATABASE_PASSWORD=admin
+      - DATABASE_LINK=casapadelsfax_mongodb:27017
+  mongo:
+    container_name: casapadelsfax_mongodb
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodbData:/data/db
+    networks:
+      - casapadel
+    environment:
+    - MONGO_INITDB_DATABASE=casapadelsfax
+    - MONGO_INITDB_ROOT_USERNAME=admin
+    - MONGO_INITDB_ROOT_PASSWORD=admin
+volumes:
+  mongodbData: {}
+networks:
+  casapadel: {}
