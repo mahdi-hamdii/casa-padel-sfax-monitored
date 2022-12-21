@@ -4,7 +4,7 @@ import { MonitoringController } from './monitoring.controller';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import { makeCounterProvider } from '@willsoto/nestjs-prometheus';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LoggingInterceptor } from './logging.interceptor';
+import { LoggingInterceptor } from '../logs/logging.interceptor';
 @Global()
 @Module({
   imports: [PrometheusModule.register()],

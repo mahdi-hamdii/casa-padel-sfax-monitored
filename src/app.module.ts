@@ -12,13 +12,28 @@ import { MulterModule } from '@nestjs/platform-express';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ReservationsModule } from './reservations/reservations.module';
+import { LokiLoggerModule } from 'nestjs-loki-logger';
+
 @Module({
   imports: [
     AuthModule,
     ConfigModule.forRoot(),
+    // MongooseModule.forRoot(
+    //   `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_LINK}`
+    // ),
     MongooseModule.forRoot(
-      `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_LINK}`
+      `mongodb+srv://mahdi:mahdi123@cluster0.sr2ks.mongodb.net/casadelpadel?retryWrites=true&w=majority`,
     ),
+
+    LokiLoggerModule.forRoot({
+      lokiUrl: 'http://localhost:3100',   // loki server
+      labels: {
+        'label': 'testing',     // app level labels, these labels will be attached to every log in the application
+      },
+      logToConsole: true,
+      gzip: false // contentEncoding support gzip or not
+    }),
+
     UsersModule,
     TournamentsModule,
     AdminModule,
