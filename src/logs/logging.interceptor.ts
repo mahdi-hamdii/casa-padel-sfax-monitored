@@ -1,9 +1,9 @@
+import { LokiLogger } from 'nestjs-loki-logger';
 import {
     Injectable,
     NestInterceptor,
     ExecutionContext,
     CallHandler,
-    Logger,
   } from '@nestjs/common';
   import { Observable } from 'rxjs';
   import { tap } from 'rxjs/operators';
@@ -11,7 +11,8 @@ import {
   
   @Injectable()
   export class LoggingInterceptor implements NestInterceptor {
-    private readonly logger = new Logger(LoggingInterceptor.name);
+  private readonly lokiLogger = new LokiLogger(LoggingInterceptor.name);   // adds context label
+
   
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
       if (context.getType() === 'http') {
@@ -26,7 +27,7 @@ import {
       const correlationKey = uuidv4();
       const userId = request.user?.userId;
   
-      this.logger.log(
+      this.lokiLogger.log(
         `[${correlationKey}] ${method} ${url} ${userId} ${userAgent} ${ip}: ${
           context.getClass().name
         } ${context.getHandler().name}`,
@@ -40,11 +41,30 @@ import {
           const { statusCode } = response;
           const contentLength = response.get('content-length');
   
-          this.logger.log(
-            `[${correlationKey}] ${method} ${url} ${statusCode} ${contentLength}: ${
-              Date.now() - now
-            }ms`,
-          );
+          if (statusCode == 401 ){
+            this.lokiLogger.error(
+              `[${correlationKey}] ${method} ${url} ${statusCode} ${contentLength}: ${
+                Date.now() - now
+              }ms - USER NOT AUTHORIZED `,
+            );
+          }
+          else if (statusCode == 404 ) {
+
+            this.lokiLogger.error(
+              `[${correlationKey}] ${method} ${url} ${statusCode} ${contentLength}: ${
+                Date.now() - now 
+              }ms - PAGE NOT FOUND`,
+            );
+
+          }
+          else if (statusCode == 200 ) {
+            this.lokiLogger.log(
+              `[${correlationKey}] ${method} ${url} ${statusCode} ${contentLength}: ${
+                Date.now() - now
+              }ms - STATUS GOOD `,
+            );
+          }
+         
         }),
       );
     }

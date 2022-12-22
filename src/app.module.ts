@@ -18,17 +18,14 @@ import { LokiLoggerModule } from 'nestjs-loki-logger';
   imports: [
     AuthModule,
     ConfigModule.forRoot(),
-    // MongooseModule.forRoot(
-    //   `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_LINK}`
-    // ),
     MongooseModule.forRoot(
-      `mongodb+srv://mahdi:mahdi123@cluster0.sr2ks.mongodb.net/casadelpadel?retryWrites=true&w=majority`,
+      `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_LINK}`
     ),
 
     LokiLoggerModule.forRoot({
       lokiUrl: 'http://localhost:3100',   // loki server
       labels: {
-        'label': 'testing',     // app level labels, these labels will be attached to every log in the application
+        'label': 'casa-padel',     // app level labels, these labels will be attached to every log in the application
       },
       logToConsole: true,
       gzip: false // contentEncoding support gzip or not
