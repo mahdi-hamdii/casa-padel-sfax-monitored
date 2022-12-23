@@ -8,11 +8,17 @@ import {
   import { Observable } from 'rxjs';
   import { tap } from 'rxjs/operators';
   import { v4 as uuidv4 } from 'uuid';
+import { LogsService } from './logs.service';
   
   @Injectable()
   export class LoggingInterceptor implements NestInterceptor {
   private readonly lokiLogger = new LokiLogger(LoggingInterceptor.name);   // adds context label
-
+private logService
+  constructor(
+  ){
+    this.logService = new LogsService();
+    
+  }
   
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
       if (context.getType() === 'http') {

@@ -18,6 +18,8 @@ export class SuperAdminGuard implements CanActivate {
     // Validate if the user is super admin
     const admin = await this.adminService.findAdminByEmail(email);
     if (!admin || admin.role != 'sa') {
+      console.log("Unauthorized")
+
       throw new UnauthorizedException('Unauthorized');
     }
 
@@ -31,6 +33,8 @@ export class SuperAdminGuard implements CanActivate {
       jwt = request.headers.authorization.slice(7);
       await this.jwtService.verify(jwt);
     } catch (error) {
+      console.log("Unauthorized")
+
       throw new UnauthorizedException('Invalid Token');
     }
 

@@ -1,4 +1,4 @@
-import { Global, Module } from '@nestjs/common';
+import { Global, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from 'src/users/users.module';
@@ -6,6 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt/jwt.strategy';
+import { AuthLoggerMiddleware } from './utils/AuthLoggerMiddleware';
 // import { GoogleStrategy } from './google/google.strategy';
 
 @Global()
@@ -27,4 +28,8 @@ import { JwtStrategy } from './jwt/jwt.strategy';
     PassportModule,
   ],
 })
-export class AuthModule {}
+export class AuthModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthLoggerMiddleware).forRoutes('auth/*');
+  }
+}

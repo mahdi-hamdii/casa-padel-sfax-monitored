@@ -14,11 +14,15 @@ import { Model } from 'mongoose';
 import { LoginAdminDto } from './dto/login-admin.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ChangeAdminPasswordDto } from './dto/change-admin-password.dto';
+import { InjectMetric } from '@willsoto/nestjs-prometheus';
+import { Counter } from "prom-client";
 @Injectable()
 export class AdminService {
   constructor(
     @InjectModel(Admin.name) private adminModel: Model<AdminDocument>,
     private jwtService: JwtService,
+    @InjectMetric("http_request_total") public counter: Counter<string>,
+    @InjectMetric("total_enrolment") public tournamentCounter: Counter<string>,
   ) {}
 
   async findAdminByEmail(email: string) {

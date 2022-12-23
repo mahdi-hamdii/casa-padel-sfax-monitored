@@ -1,4 +1,3 @@
-import { LokiLogger } from 'nestjs-loki-logger';
 import {
   Controller,
   Get,
@@ -15,12 +14,10 @@ import { UpdateTournamentDto } from './dto/update-tournament.dto';
 @Controller('tournaments')
 export class TournamentsController {
   constructor(private readonly tournamentsService: TournamentsService) {}
-  private readonly lokiLogger = new LokiLogger(TournamentsController.name);   // adds context label
 
 
   @Post('/create')
   async createTournament(@Body() createTournamentDto: CreateTournamentDto) {
-    console.log("creation");
     return this.tournamentsService.createTournament(createTournamentDto);
   }
 
@@ -34,7 +31,6 @@ export class TournamentsController {
   }
   @Get('/all')
   async findAllTournaments() {
-    this.lokiLogger.error("sorry ")
     return this.tournamentsService.findAllTournaments();
   }
 

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
@@ -13,14 +13,19 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ReservationsModule } from './reservations/reservations.module';
 import { LokiLoggerModule } from 'nestjs-loki-logger';
+import { LoggerMiddleware } from './logs/LoggerMiddleware';
 
 @Module({
   imports: [
     AuthModule,
     ConfigModule.forRoot(),
+     // MongooseModule.forRoot(
+    //   `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_LINK}`
+    // ),
     MongooseModule.forRoot(
-      `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_LINK}`
+      `mongodb+srv://mahdi:mahdi123@cluster0.sr2ks.mongodb.net/casadelpadel?retryWrites=true&w=majority`,
     ),
+
 
     LokiLoggerModule.forRoot({
       lokiUrl: 'http://localhost:3100',   // loki server

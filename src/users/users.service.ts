@@ -1,3 +1,4 @@
+import { LokiLogger } from 'nestjs-loki-logger';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -11,11 +12,11 @@ import { Counter } from "prom-client"
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>, 
   @InjectMetric("http_request_total") public counter: Counter<string>) {}
+  lokiLogger = new LokiLogger(UsersService.name);  
 
   async findUserByEmail(email: string) {
     try{
       const user = await this.userModel.findOne({ email });
-      // console.log(user);
       // this will return the user if it find it or return null
       this.counter.labels({route:"users", statusCode: "200"}).inc()
       return user;
