@@ -1,8 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import sdk from './tracer/tracer';
+
 
 async function bootstrap() {
+
+  await sdk.start();
+
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
   .setTitle('Casa-padel-sfax')
@@ -13,6 +18,6 @@ async function bootstrap() {
 
   // app.useGlobalPipes(new ValidationPipe());
   // app.enableCors();
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();

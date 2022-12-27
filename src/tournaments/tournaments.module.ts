@@ -10,13 +10,19 @@ import { MonitoringModule } from 'src/monitoring/monitoring.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerMiddleware } from 'src/logs/LoggerMiddleware';
 import { LogsModule } from 'src/logs/logs.module';
+import { TracerModule } from 'src/tracer/tracer.module';
+import { TracerService } from 'src/tracer/tracer.service';
 
 @Module({
   imports:[
-    MongooseModule.forFeature([{ name: Tournament.name, schema: TournamentSchema }, {name:Sponsor.name, schema: SponsorSchema}]), MonitoringModule, LogsModule
+    MongooseModule.forFeature([{ name: Tournament.name, schema: TournamentSchema }, {name:Sponsor.name, schema: SponsorSchema}])
+    , MonitoringModule, 
+    LogsModule,
+    TracerModule
   ],
   controllers: [TournamentsController],
   providers: [TournamentsService,
+    TracerService
   ]
   
 })

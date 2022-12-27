@@ -1,3 +1,4 @@
+import { response } from 'express';
 import {
   Controller,
   Post,
@@ -14,15 +15,37 @@ import { ChangeAdminPasswordDto } from './dto/change-admin-password.dto';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { LoginAdminDto } from './dto/login-admin.dto';
 import { SuperAdminGuard } from './guards/super-admin.guard';
+import * as api from '@opentelemetry/api';
 
 @Controller('admin')
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  private tracer
+  constructor(private readonly adminService: AdminService) {
+     this.tracer = api.trace.getTracer('casa-padel-sfax', '1.0.0');
+
+  }
 
   //login admin and super admin
   @Post('/login')
   async loginAdmin(@Body(ValidationPipe) loginAdminDto: LoginAdminDto) {
-    return await this.adminService.loginAdmin(loginAdminDto);
+    return await this.tracer.startActiveSpan('/admin/login', async (span) => {
+      if (span.isRecording()) {
+        span.setAttribute('http.method', 'GET')
+        span.setAttribute('http.route', '/hello')
+      }
+      let response
+      try {
+        response = this.adminService.loginAdmin(loginAdminDto);
+      } catch (exc) {
+        span.recordException(exc)
+        span.setStatus({ code: api.SpanStatusCode.ERROR, message: String(exc) })
+      } finally {
+        span.end()
+      }
+      return await response
+      
+    })
+    
   }
 
   // create of a dsuper admin user - only for test

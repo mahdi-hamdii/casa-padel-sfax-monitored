@@ -1,19 +1,16 @@
-import { Logger } from 'winston';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Sponsor, SponsorDocument } from 'src/sponsors/entities/sponsor.entity';
-import internal from 'stream';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { UpdateTournamentDto } from './dto/update-tournament.dto';
 import { sponsoringEvent } from './entities/sponsoringEvent.interface';
 import { Team, Tournament, TournamentDocument } from './entities/tournament.entity'; 
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { Counter } from "prom-client";
-import { LoggingInterceptor } from './../logs/logging.interceptor';
+
 @Injectable()
 export class TournamentsService {
-  // logger : LoggingInterceptor;
+
   constructor(
     @InjectModel(Tournament.name)
     private tournamentModel: Model<TournamentDocument>,
@@ -21,7 +18,6 @@ export class TournamentsService {
     @InjectMetric("total_enrolment") public tournamentCounter: Counter<string>,
    
   ) {
-    // this.logger = new LoggingInterceptor(TournamentsService.name)
   }
 
   async createTournament(
@@ -182,5 +178,6 @@ export class TournamentsService {
       throw new BadRequestException("could not remove tournament", e)
     }
   }
-  
+
+ 
 }
