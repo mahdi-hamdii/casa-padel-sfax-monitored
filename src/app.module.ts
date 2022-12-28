@@ -15,6 +15,9 @@ import { ReservationsModule } from './reservations/reservations.module';
 import { LokiLoggerModule } from 'nestjs-loki-logger';
 import { LoggerMiddleware } from './logs/LoggerMiddleware';
 
+const lokiHost = process.env.LOKI_HOST || 'http://localhost:3100'
+const loki_label_name = process.env.LOKI_LABEL_NAME || 'casa-padel'
+
 @Module({
   imports: [
     AuthModule,
@@ -28,9 +31,9 @@ import { LoggerMiddleware } from './logs/LoggerMiddleware';
 
 
     LokiLoggerModule.forRoot({
-      lokiUrl: 'http://localhost:3100',   // loki server
+      lokiUrl: lokiHost,   // loki server
       labels: {
-        'label': 'casa-padel',     // app level labels, these labels will be attached to every log in the application
+        'label': loki_label_name,     // app level labels, these labels will be attached to every log in the application
       },
       logToConsole: true,
       gzip: false // contentEncoding support gzip or not

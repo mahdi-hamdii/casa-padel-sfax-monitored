@@ -9,11 +9,13 @@ import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
 
 // Configure the SDK to export telemetry data to the console
 // Enable all auto-instrumentations from the meta package
-const hostName = process.env.OTEL_TRACE_HOST || 'localhost'
+const JaggerHost = process.env.JAGGER_HOST || 'http://localhost:14268/api/traces'
+const Jagger_SERVICE_NAME = process.env.JAGGER_SERVICE_NAME || 'casa-padel-sfax'
+const ENV = process.env.ENV || 'dev'
 
 const options = {
   tags: [],
-  endpoint: `http://${hostName}:14268/api/traces`,
+  endpoint: JaggerHost,
 }
 
 const traceExporter = new JaegerExporter(options);
@@ -24,8 +26,8 @@ const sdk = new opentelemetry.NodeSDK({
   traceExporter,
   instrumentations: [getNodeAutoInstrumentations()],
   resource: new Resource({
-    [SemanticResourceAttributes.SERVICE_NAME]: 'casa-padel-sfax',
-    [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: "dev",
+    [SemanticResourceAttributes.SERVICE_NAME]: Jagger_SERVICE_NAME,
+    [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: ENV,
 
   }),
 });
