@@ -6,7 +6,7 @@ import sdk from './tracer/tracer';
 
 async function bootstrap() {
 
-  await sdk.start();
+  await sdk.start()
 
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()

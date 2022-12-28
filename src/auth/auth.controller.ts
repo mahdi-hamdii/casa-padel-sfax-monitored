@@ -14,20 +14,37 @@ import { AuthService } from './auth.service';
 // import { GoogleAuthGuard } from './google/google-auth.guard';
 import { JwtAuthGuard } from './jwt/jwt-auth.guard';
 import { UserEmail } from './user-email.decorator';
+import { TracerService } from 'src/tracer/tracer.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, 
+    private readonly tracerService: TracerService,
+    ) {}
 
   @Post('register')
   async register(@Body(ValidationPipe) createUserDto: CreateUserDto) {
-    return this.authService.register(createUserDto, 'u');
+    return await this.tracerService.tracingFunction(
+     
+      async () => { return this.authService.register(createUserDto, 'u');},
+      '/auth/register',
+      'POST'
+      )
+    
+   
   }
 
   // jwt login
   @Post('login')
   async login(@Body(ValidationPipe) loginUserDto: LoginUserDto) {
-    return this.authService.login(loginUserDto);
+    return await this.tracerService.tracingFunction(
+     
+      async () => { return this.authService.login(loginUserDto);},
+      '/auth/login',
+      'POST'
+      )
+    
+    
   }
 
   // If you want to protect your route just pass this guard

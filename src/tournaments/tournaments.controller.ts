@@ -21,6 +21,7 @@ export class TournamentsController {
     private readonly tracerService: TracerService,
     
     ) {
+
   }
 
   @Post('/create')
@@ -55,7 +56,7 @@ export class TournamentsController {
   async findAllTournaments() {
     return await this.tracerService.tracingFunction(
       async () => {return this.tournamentsService.findAllTournaments()},
-      '/tournament/tracer/test',
+      '/tournament/all',
       'GET'
       )
   }

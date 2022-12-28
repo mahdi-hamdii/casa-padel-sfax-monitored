@@ -6,15 +6,18 @@ import { User, UserSchema } from './entities/user.entity';
 import { AdminModule } from 'src/admin/admin.module';
 import { MonitoringModule } from 'src/monitoring/monitoring.module';
 import { UsersLoggerMiddleware } from './utils/UsersLoggerMiddleware';
+import { TracerModule } from 'src/tracer/tracer.module';
+import { TracerService } from 'src/tracer/tracer.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     AdminModule,
-    MonitoringModule
+    MonitoringModule,
+    TracerModule
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, TracerService],
   exports: [MongooseModule, UsersService],
 })
 export class UsersModule implements NestModule {

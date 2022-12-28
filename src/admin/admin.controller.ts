@@ -16,35 +16,26 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { LoginAdminDto } from './dto/login-admin.dto';
 import { SuperAdminGuard } from './guards/super-admin.guard';
 import * as api from '@opentelemetry/api';
+import { TracerService } from 'src/tracer/tracer.service';
 
 @Controller('admin')
 export class AdminController {
-  private tracer
-  constructor(private readonly adminService: AdminService) {
-     this.tracer = api.trace.getTracer('casa-padel-sfax', '1.0.0');
+  constructor(
+    private readonly adminService: AdminService,
+    private readonly tracerService: TracerService,
+    ) {
 
   }
 
   //login admin and super admin
   @Post('/login')
   async loginAdmin(@Body(ValidationPipe) loginAdminDto: LoginAdminDto) {
-    return await this.tracer.startActiveSpan('/admin/login', async (span) => {
-      if (span.isRecording()) {
-        span.setAttribute('http.method', 'GET')
-        span.setAttribute('http.route', '/hello')
-      }
-      let response
-      try {
-        response = this.adminService.loginAdmin(loginAdminDto);
-      } catch (exc) {
-        span.recordException(exc)
-        span.setStatus({ code: api.SpanStatusCode.ERROR, message: String(exc) })
-      } finally {
-        span.end()
-      }
-      return await response
-      
-    })
+    return await this.tracerService.tracingFunction(
+     
+      async () => {return this.adminService.loginAdmin(loginAdminDto);},
+      '/admin/login',
+      'POST'
+      )
     
   }
 
@@ -53,7 +44,11 @@ export class AdminController {
   // @UseGuards(SuperAdminGuard)
   @Post('/super/create')
   async createSuperAdmin(@Body() createAdminDto: CreateAdminDto) {
-    return await this.adminService.createSuperAdmin(createAdminDto);
+    return await this.tracerService.tracingFunction(
+      async () => { return await this.adminService.createSuperAdmin(createAdminDto);},
+      '/admin/super/create',
+      'POST'
+      )
   }
 
   // Super admin funcitonalities to the admin
@@ -61,35 +56,61 @@ export class AdminController {
   @UseGuards(SuperAdminGuard)
   @Post('/create')
   async createAdmin(@Body(ValidationPipe) createAdminDto: CreateAdminDto) {
-    return await this.adminService.createAdmin(createAdminDto);
+    return await this.tracerService.tracingFunction(
+      async () => {  return await this.adminService.createAdmin(createAdminDto);},
+      '/admin/create',
+      'POST'
+      )
+   
   }
 
   @UseGuards(JwtAuthGuard)
   @UseGuards(SuperAdminGuard)
   @Delete('/delete/:email')
-  deleteAdminById(@Param('email') email: string) {
-    return this.adminService.deleteAdminByEmail(email);
+  async deleteAdminById(@Param('email') email: string) {
+    return await this.tracerService.tracingFunction(
+      async () => {  return this.adminService.deleteAdminByEmail(email);},
+      '/admin/delete/email',
+      'DELETE'
+      )
+    
   }
 
   @UseGuards(JwtAuthGuard)
   @UseGuards(SuperAdminGuard)
   @Get('/all')
-  findAllAdmins() {
+  async findAllAdmins() {
+    // return await this.tracerService.tracingFunction(
+    //   async () => {  return this.adminService.findAllAdmins();},
+    //   '/admin/all',
+    //   'GET'
+    //   )
     return this.adminService.findAllAdmins();
+   
   }
 
   @UseGuards(JwtAuthGuard)
   @UseGuards(SuperAdminGuard)
   @Post('/deactivate')
   async deactivateAdminById(@Body() res) {
-    return await this.adminService.deactivateAdminById(res.id);
+    return await this.tracerService.tracingFunction(
+      async () => {  return await this.adminService.deactivateAdminById(res.id);},
+      '/admin/deactivate',
+      'POST'
+      )
+    
   }
 
   @UseGuards(JwtAuthGuard)
   @UseGuards(SuperAdminGuard)
   @Post('/activate')
   async activateAdminById(@Body() res) {
-    return await this.adminService.activateAdminById(res.id);
+    return await this.tracerService.tracingFunction(
+      async () => {return await this.adminService.activateAdminById(res.id);},
+      '/admin/activate',
+      'POST'
+      )
+    
   }
 
   @UseGuards(JwtAuthGuard)
@@ -98,8 +119,14 @@ export class AdminController {
   async changeAdminPasswordById(
     @Body(ValidationPipe) changeAdminPasswordDto: ChangeAdminPasswordDto,
   ) {
-    return await this.adminService.changeAdminPasswordByEmail(
-      changeAdminPasswordDto,
-    );
+    return await this.tracerService.tracingFunction(
+      async () => {return await this.adminService.changeAdminPasswordByEmail(
+        changeAdminPasswordDto,
+      );},
+      '/admin/change-password',
+      'POST'
+      )
+    
+    
   }
 }

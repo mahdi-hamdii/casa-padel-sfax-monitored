@@ -7,6 +7,7 @@ import { sponsoringEvent } from './entities/sponsoringEvent.interface';
 import { Team, Tournament, TournamentDocument } from './entities/tournament.entity'; 
 import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { Counter } from "prom-client";
+import sdk from '../tracer/tracer';
 
 @Injectable()
 export class TournamentsService {
@@ -18,6 +19,7 @@ export class TournamentsService {
     @InjectMetric("total_enrolment") public tournamentCounter: Counter<string>,
    
   ) {
+
   }
 
   async createTournament(

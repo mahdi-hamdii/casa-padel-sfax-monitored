@@ -12,6 +12,7 @@ import { LoggerMiddleware } from 'src/logs/LoggerMiddleware';
 import { LogsModule } from 'src/logs/logs.module';
 import { TracerModule } from 'src/tracer/tracer.module';
 import { TracerService } from 'src/tracer/tracer.service';
+import sdk from '../tracer/tracer';
 
 @Module({
   imports:[
@@ -27,7 +28,12 @@ import { TracerService } from 'src/tracer/tracer.service';
   
 })
 export class TournamentsModule implements NestModule {
+  constructor(){
+
+  
+  }
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(TournamentLoggerMiddleware).forRoutes('tournaments/*');
+
   }
 }

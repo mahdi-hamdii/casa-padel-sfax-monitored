@@ -6,6 +6,8 @@ import { User, UserSchema } from 'src/users/entities/user.entity';
 import { Reservation, ReservationSchema } from './entities/reservation.entity';
 import { AdminModule } from 'src/admin/admin.module';
 import { ReservationsLoggerMiddleware } from './utils/ReservationsLoggerMiddleware';
+import { TracerModule } from 'src/tracer/tracer.module';
+import { TracerService } from 'src/tracer/tracer.service';
 
 @Module({
   imports: [
@@ -14,9 +16,10 @@ import { ReservationsLoggerMiddleware } from './utils/ReservationsLoggerMiddlewa
       { name: Reservation.name, schema: ReservationSchema },
     ]),
     AdminModule,
+    TracerModule
   ],
   controllers: [ReservationsController],
-  providers: [ReservationsService],
+  providers: [ReservationsService, TracerService],
 })
 export class ReservationsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
