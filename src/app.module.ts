@@ -22,12 +22,12 @@ const loki_label_name = process.env.LOKI_LABEL_NAME || 'casa-padel'
   imports: [
     AuthModule,
     ConfigModule.forRoot(),
-     // MongooseModule.forRoot(
-    //   `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_LINK}`
-    // ),
-    MongooseModule.forRoot(
-      `mongodb+srv://mahdi:mahdi123@cluster0.sr2ks.mongodb.net/casadelpadel?retryWrites=true&w=majority`,
+     MongooseModule.forRoot(
+      `mongodb://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_LINK}`
     ),
+    // MongooseModule.forRoot(
+    //   `mongodb+srv://mahdi:mahdi123@cluster0.sr2ks.mongodb.net/casadelpadel?retryWrites=true&w=majority`,
+    // ),
 
 
     LokiLoggerModule.forRoot({

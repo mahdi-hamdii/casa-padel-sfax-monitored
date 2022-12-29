@@ -1,6 +1,7 @@
 deployment:
     replica: 1
-    imageName: mahdihamdi99/casapadelsfax
+    # imageName: mahdihamdi99/casapadelsfax
+    imageName: ramezbenaribia/casapadelsfax
     imageTag: latest
     httpPort: 3000
 mongodb:
