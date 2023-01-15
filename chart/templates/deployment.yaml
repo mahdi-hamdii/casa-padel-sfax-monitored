@@ -12,6 +12,10 @@ spec:
     metadata:
       labels:
         app: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "3000"
     spec:
       containers:
         - name: backend
@@ -19,6 +23,20 @@ spec:
           ports:
             - containerPort: 3000
           env:
+            - name: LOKI_HOST
+              value: http://casa-mychart-loki.staging:3100
+
+
+            - name: JAGGER_HOST
+              value: http://casa-mychart-jaeger-collector.staging:14268/api/traces
+
+            - name: JAGGER_SERVICE_NAME
+              value: casa-padel-sfax
+
+            - name: ENV
+              value: dev
+
+
             - name: DATABASE_USER
               valueFrom:
                 secretKeyRef:

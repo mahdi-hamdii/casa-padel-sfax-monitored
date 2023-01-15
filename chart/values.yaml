@@ -7,3 +7,171 @@ deployment:
 mongodb:
     DATABASE_USER: YWRtaW4=
     DATABASE_PASSWORD: YWRtaW4=
+
+# prometheus:
+loki: 
+  global:
+    persistence:
+    # -- Enable StatefulSetAutoDeletePVC feature
+    enableStatefulSetAutoDeletePVC: true
+    # -- Size of persistent disk
+    size: 10Gi
+    # -- Storage class to be used.
+    # If defined, storageClassName: <storageClass>.
+    # If set to "-", storageClassName: "", which disables dynamic provisioning.
+    # If empty or set to null, no storageClassName spec is
+    # set, choosing the default provisioner (gp2 on AWS, standard on GKE, AWS, and OpenStack).
+    storageClass: managed-csi
+    # -- Selector for persistent disk
+    selector: casa-loki
+
+jaeger:
+  provisionDataStore:
+    cassandra: false
+  allInOne:
+    enabled: true
+  storage:
+    type: none
+  agent:
+    enabled: false
+  collector:
+    enabled: false
+  query:
+    enabled: false
+  # agent:
+  #   podSecurityContext: {}
+  #   securityContext: {}
+  #   enabled: true
+  #   annotations: {}
+  #   extraEnv: []
+  #   daemonset:
+  #     useHostPort: false
+  #     updateStrategy: {}
+  #       # type: RollingUpdate
+  #       # rollingUpdate:
+  #       #   maxUnavailable: 1
+  #   service:
+  #     annotations: {}
+  #     # List of IP ranges that are allowed to access the load balancer (if supported)
+  #     loadBalancerSourceRanges: []
+  #     type: ClusterIP
+  #     # zipkinThriftPort :accept zipkin.thrift over compact thrift protocol
+  #     zipkinThriftPort: 5775
+  #     # compactPort: accept jaeger.thrift over compact thrift protocol
+  #     compactPort: 6831
+  #     # binaryPort: accept jaeger.thrift over binary thrift protocol
+  #     binaryPort: 6832
+  #     # samplingPort: (HTTP) serve configs, sampling strategies
+  #     samplingPort: 5778
+
+  # collector:
+  #   enabled: true
+  #   annotations: {}
+  #   image: jaegertracing/jaeger-collector
+  #   # tag: 1.22
+  #   imagePullSecrets: []
+  #   pullPolicy: IfNotPresent
+  #   dnsPolicy: ClusterFirst
+  #   extraEnv: []
+  #   cmdlineParams: {}
+  #   basePath: /
+  #   replicaCount: 1
+  #   autoscaling:
+  #     enabled: false
+  #     minReplicas: 2
+  #     maxReplicas: 10
+  #     # targetCPUUtilizationPercentage: 80
+  #     # targetMemoryUtilizationPercentage: 80
+  #   service:
+  #     annotations: {}
+  #     # The IP to be used by the load balancer (if supported)
+  #     loadBalancerIP: ''
+  #     # List of IP ranges that are allowed to access the load balancer (if supported)
+  #     loadBalancerSourceRanges: []
+  #     type: ClusterIP
+  #     # Cluster IP address to assign to service. Set to None to make service headless
+  #     clusterIP: ""
+  #     grpc:
+  #       port: 14250
+  #       # nodePort:
+  #     # httpPort: can accept spans directly from clients in jaeger.thrift format
+  #     http:
+  #       port: 14268
+  #       # nodePort:
+  #     # can accept Zipkin spans in JSON or Thrift
+  #     zipkin: {}
+  #       # port: 9411
+  #       # nodePort:
+  #     otlp:
+  #       grpc: {}
+  #         # port: 4317
+  #         # nodePort:
+  #       http: {}
+  #         # port: 4318
+  #         # nodePort:
+
+
+grafana:
+
+    service:
+        enabled: true
+        type: LoadBalancer
+        port: 80
+        targetPort: 3000
+            # targetPort: 4181 To be used with a proxy extraContainer
+        ## Service annotations. Can be templated.
+        annotations: {}
+        labels: {}
+        portName: service
+        # Adds the appProtocol field to the service. This allows to work with istio protocol selection. Ex: "http" or "tcp"
+        appProtocol: ""
+
+    adminUser: admin
+    adminPassword: admin
+
+    environment: 
+      # Disable authentication
+        GF_AUTH_DISABLE_LOGIN_FORM: true
+        GF_AUTH_ANONYMOUS_ENABLED: true
+        GF_AUTH_ANONYMOUS_ORG_NAME: Main Org.
+        GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+        GF_USERS_ALLOW_SIGN_UP: false
+
+
+
+    datasources: 
+
+        datasources.yaml:
+            apiVersion: 1
+            datasources:
+                - name: Prometheus
+                  type: prometheus
+                  url: casa-mychart-prometheus-server.staging
+                  access: proxy
+                  isDefault: true
+                  uid: prometheus
+                  editable: true
+
+                
+                - name: Loki
+                  type: loki
+                  access: proxy
+                  uid: loki
+                  url: http://casa-mychart-loki.staging:3100  
+                  jsonData:
+                #   derivedFields:
+                #     - name: "traceID"
+                #       matcherRegex: "traceID=(\\w+)"
+                #       url: "$${__value.raw}"
+                #       datasourceUid: jaeger
+                #   editable: true
+
+                - name: Jaeger
+                  type: jaeger
+                  uid: jaeger
+                  access: proxy
+                  url: http://casa-mychart-jaeger-query.staging:16686
+                  editable: true
+        
+
+    
