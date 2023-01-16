@@ -8,5 +8,8 @@ dependencies:
 - name: loki
   repository: https://grafana.github.io/loki/charts
   version: 2.1.1
-digest: sha256:3b32d83a878be89862cc42f0753701ec02404eb47699e96490baaef510508c7d
-generated: "2023-01-16T18:26:53.250417879+01:00"
+- name: jaeger
+  repository: https://jaegertracing.github.io/helm-charts
+  version: 0.66.1
+digest: sha256:273e7f4728e628adcf8395109fe36c16f76ad30d2873e3a40cc44d3fb45bb3b2
+generated: "2023-01-16T19:17:54.694023917+01:00"
