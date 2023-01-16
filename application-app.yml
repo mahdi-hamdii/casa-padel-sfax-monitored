@@ -6,14 +6,14 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/mahdi-hamdii/casa-padel-sfax-monitored.git
+    repoURL: 'https://github.com/mahdi-hamdii/casa-padel-sfax-monitored'
     path: chart
     targetRevision: monolith
     helm:
       valueFiles:
         - values.yaml
   destination:
-    server: "https://kubernetes.default.svc"
+    server: 'https://kubernetes.default.svc'
     namespace: staging
   syncPolicy:
     syncOptions:

@@ -65,7 +65,7 @@ grafana:
             datasources:
                 - name: Prometheus
                   type: prometheus
-                  url: http://casa-mychart-prometheus-server.staging
+                  url: http://casa-mychart-prometheus-server.monitoring
                   access: proxy
                   isDefault: true
                   uid: prometheus
@@ -76,7 +76,7 @@ grafana:
                   type: loki
                   access: proxy
                   uid: loki
-                  url: http://casa-mychart-loki.staging:3100  
+                  url: http://casa-mychart-loki.monitoring:3100  
                   jsonData:
                 #   derivedFields:
                 #     - name: "traceID"
@@ -89,5 +89,5 @@ grafana:
                   type: jaeger
                   uid: jaeger
                   access: proxy
-                  url: http://casa-mychart-jaeger-query.staging:16686
+                  url: http://casa-mychart-jaeger-query.monitoring:16686
                   editable: true
