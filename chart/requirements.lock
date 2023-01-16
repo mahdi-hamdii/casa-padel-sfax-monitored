@@ -1,21 +1,6 @@
 dependencies:
-- name: prometheus
-  repository: https://prometheus-community.github.io/helm-charts
-  version: 19.3.1
-- name: grafana
-  repository: https://grafana.github.io/helm-charts
-  version: 6.50.0
-- name: loki
-  repository: https://grafana.github.io/loki/charts
-  version: 2.1.1
-- name: jaeger
-  repository: https://jaegertracing.github.io/helm-charts
-  version: 0.66.1
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 17.4.2
-- name: argo-cd
-  repository: https://argoproj.github.io/argo-helm
-  version: 5.17.1
-digest: sha256:07e1b35abd58c31d46c854e185879117135075312ae566b5ec05d689c4e20b27
-generated: "2023-01-16T15:05:30.905571051+01:00"
+digest: sha256:d2b191b87c2f8d9e7eb949957a6417747b149d8aaef328293fd2a6ee0e04179c
+generated: "2023-01-16T16:57:14.084416528+01:00"

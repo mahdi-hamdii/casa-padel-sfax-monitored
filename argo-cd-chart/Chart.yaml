@@ -1,0 +1,8 @@
+apiVersion: v1
+name: ArgoCD
+description: Chart that will create argocd and the required argocd application
+version: 0.1.0
+dependencies:
+  - name: argo-cd
+    repository: https://argoproj.github.io/argo-helm
+    version: 5.x.x

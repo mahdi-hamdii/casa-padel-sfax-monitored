@@ -3,28 +3,7 @@ name: Casa Padel Sfax
 description: A web application for a padel club with features of tournaments, reservations and sponsors
 version: 0.1.0
 
-dependencies:
-  - name: prometheus
-    repository: https://prometheus-community.github.io/helm-charts
-    version: 19.x.x  
-  - name: grafana
-    repository: https://grafana.github.io/helm-charts
-    version: 6.x.x  
-  - name: loki
-    repository: https://grafana.github.io/loki/charts
-    version: 2.x.x    
-  # - name: portmail
-  #   repository: https://grafana.github.io/portmail/charts
-  #   version: 2.x.x  
-  - name: jaeger
-    # repository: https://raw.githubusercontent.com/hansehe/jaeger-all-in-one/master/helm/charts
-    repository: https://jaegertracing.github.io/helm-charts  
-    version: 0.x.x  
-
+dependencies: 
   - name: redis
     repository: https://charts.bitnami.com/bitnami  
     version: 17.x.x  
-
-  - name: argo-cd
-    repository: https://argoproj.github.io/argo-helm
-    version: 5.x.x  

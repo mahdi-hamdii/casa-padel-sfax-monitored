@@ -1,0 +1,93 @@
+loki: 
+  global:
+    persistence:
+    # -- Enable StatefulSetAutoDeletePVC feature
+    enableStatefulSetAutoDeletePVC: true
+    # -- Size of persistent disk
+    size: 10Gi
+    # -- Storage class to be used.
+    # If defined, storageClassName: <storageClass>.
+    # If set to "-", storageClassName: "", which disables dynamic provisioning.
+    # If empty or set to null, no storageClassName spec is
+    # set, choosing the default provisioner (gp2 on AWS, standard on GKE, AWS, and OpenStack).
+    storageClass: managed-csi
+    # -- Selector for persistent disk
+    selector: casa-loki
+
+jaeger:
+  provisionDataStore:
+    cassandra: false
+  allInOne:
+    enabled: true
+  storage:
+    type: none
+  agent:
+    enabled: false
+  collector:
+    enabled: false
+  query:
+    enabled: false
+  
+
+
+grafana:
+
+    service:
+        enabled: true
+        type: LoadBalancer
+        port: 80
+        targetPort: 3000
+            # targetPort: 4181 To be used with a proxy extraContainer
+        ## Service annotations. Can be templated.
+        annotations: {}
+        labels: {}
+        portName: service
+        # Adds the appProtocol field to the service. This allows to work with istio protocol selection. Ex: "http" or "tcp"
+        appProtocol: ""
+
+    adminUser: admin
+    adminPassword: admin
+
+    environment: 
+      # Disable authentication
+        GF_AUTH_DISABLE_LOGIN_FORM: true
+        GF_AUTH_ANONYMOUS_ENABLED: true
+        GF_AUTH_ANONYMOUS_ORG_NAME: Main Org.
+        GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
+        GF_USERS_ALLOW_SIGN_UP: false
+
+
+
+    datasources: 
+
+        datasources.yaml:
+            apiVersion: 1
+            datasources:
+                - name: Prometheus
+                  type: prometheus
+                  url: http://casa-mychart-prometheus-server.staging
+                  access: proxy
+                  isDefault: true
+                  uid: prometheus
+                  editable: true
+
+                
+                - name: Loki
+                  type: loki
+                  access: proxy
+                  uid: loki
+                  url: http://casa-mychart-loki.staging:3100  
+                  jsonData:
+                #   derivedFields:
+                #     - name: "traceID"
+                #       matcherRegex: "traceID=(\\w+)"
+                #       url: "$${__value.raw}"
+                #       datasourceUid: jaeger
+                #   editable: true
+
+                - name: Jaeger
+                  type: jaeger
+                  uid: jaeger
+                  access: proxy
+                  url: http://casa-mychart-jaeger-query.staging:16686
+                  editable: true
