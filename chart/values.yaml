@@ -11,6 +11,33 @@ apiGateway:
     imageTag: latest
     httpPort: 3000
 
+microserviceAuth:
+    replica: 1
+    imageName: ramezbenaribia/microservice-auth
+    imageTag: latest
+    httpPort: 3001
+
+microserviceReservation:
+    replica: 1
+    imageName: ramezbenaribia/microservice-reservations
+    imageTag: latest
+    httpPort: 3002
+
+microserviceTournaments:
+    replica: 1
+    imageName: ramezbenaribia/microservice-tournaments
+    imageTag: latest
+    httpPort: 3003
+
+microserviceSponsors:
+    replica: 1
+    imageName: ramezbenaribia/microservice-sponsors
+    imageTag: latest
+    httpPort: 3004
+
+
+
+
 mongodb:
     DATABASE_USER: YWRtaW4=
     DATABASE_PASSWORD: YWRtaW4=

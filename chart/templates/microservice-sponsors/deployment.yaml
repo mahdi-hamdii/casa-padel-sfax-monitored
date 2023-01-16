@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-microservice-sponsors
+  namespace: staging
+spec:
+  replicas: {{ .Values.apiGateway.replica }}
+  selector:
+    matchLabels:
+      app: backend-microservice-sponsors
+  template:
+    metadata:
+      labels:
+        app: backend-microservice-sponsors
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "3000"
+    spec:
+      containers:
+        - name: backend-microservice-sponsors
+          image: {{ .Values.microserviceSponsors.imageName }}:{{ .Values.microserviceSponsors.imageTag }}
+          ports:
+            - containerPort: 3000
+          env:
+            - name: LOKI_HOST
+              value: http://casa-mychart-loki.staging:3100
+
+
+            - name: JAGGER_HOST
+              value: http://casa-mychart-jaeger-collector.staging:14268/api/traces
+
+            - name: JAGGER_SERVICE_NAME
+              value: casa-padel-sfax
+
+            - name: ENV
+              value: dev            
+              
+            - name: REDIS_QUEUE_HOST
+              # value: http://casa-mychart-redis-master.staging        
+              value: http://casa-mychart-redis-headless.staging        
+
+            - name: REDIS_QUEUE_PORT
+              value: "6379"
+
+
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: backend-microservice-sponsors-secrets
+                  key: DATABASE_USER
+
+            - name: DATABASE_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: backend-microservice-sponsors-secrets
+                  key: DATABASE_PASSWORD
+
+            - name: DATABASE_LINK
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-microservice-sponsors-cm
+                  key: DATABASE_LINK
