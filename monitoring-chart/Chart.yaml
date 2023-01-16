@@ -11,4 +11,8 @@ dependencies:
     version: 6.x.x  
   - name: loki
     repository: https://grafana.github.io/loki/charts
-    version: 2.x.x   
+    version: 2.x.x 
+  - name: jaeger
+    # repository: https://raw.githubusercontent.com/hansehe/jaeger-all-in-one/master/helm/charts
+    repository: https://jaegertracing.github.io/helm-charts  
+    version: 0.x.x  
