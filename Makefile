@@ -18,10 +18,10 @@ monitoring-dependencies:
 uninstall: uninstall-monitoring uninstall-application uninstall-argocd 
 	
 uninstall-argocd:
-	helm uninstall argocd -n argocd
+	helm uninstall argo-cd -n argocd
 
 uninstall-monitoring:
 	helm uninstall monitoring -n monitoring
-	
+
 uninstall-application:
 	helm uninstall application -n staging

@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/mahdi-hamdii/casa-padel-sfax-monitored.git
     path: chart
-    targetRevision: HEAD
+    targetRevision: monolith
     helm:
       valueFiles:
         - values.yaml

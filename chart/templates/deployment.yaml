@@ -24,11 +24,11 @@ spec:
             - containerPort: 3000
           env:
             - name: LOKI_HOST
-              value: http://casa-mychart-loki.staging:3100
+              value: http://casa-mychart-loki.monitoring:3100
 
 
             - name: JAGGER_HOST
-              value: http://casa-mychart-jaeger-collector.staging:14268/api/traces
+              value: http://casa-mychart-jaeger-collector.monitoring:14268/api/traces
 
             - name: JAGGER_SERVICE_NAME
               value: casa-padel-sfax
