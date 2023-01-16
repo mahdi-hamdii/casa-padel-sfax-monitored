@@ -21,5 +21,9 @@ dependencies:
     repository: https://jaegertracing.github.io/helm-charts  
     version: 0.x.x  
 
+  - name: redis
+    repository: https://charts.bitnami.com/bitnami  
+    version: 17.x.x  
+
   # - name: promtail
   #   repository: https://jaegertracing.github.io/helm-charts

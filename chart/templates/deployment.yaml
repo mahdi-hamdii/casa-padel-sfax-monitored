@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-deploy
+  name: backend-monolith
   namespace: staging
 spec:
   replicas: {{ .Values.deployment.replica }}

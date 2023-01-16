@@ -1,9 +1,16 @@
 deployment:
-    replica: 1
+    replica: 2
     # imageName: mahdihamdi99/casapadelsfax
     imageName: ramezbenaribia/casapadelsfax
     imageTag: latest
     httpPort: 3000
+
+apiGateway:
+    replica: 1
+    imageName: ramezbenaribia/api-gateway
+    imageTag: latest
+    httpPort: 3000
+
 mongodb:
     DATABASE_USER: YWRtaW4=
     DATABASE_PASSWORD: YWRtaW4=
@@ -38,77 +45,7 @@ jaeger:
     enabled: false
   query:
     enabled: false
-  # agent:
-  #   podSecurityContext: {}
-  #   securityContext: {}
-  #   enabled: true
-  #   annotations: {}
-  #   extraEnv: []
-  #   daemonset:
-  #     useHostPort: false
-  #     updateStrategy: {}
-  #       # type: RollingUpdate
-  #       # rollingUpdate:
-  #       #   maxUnavailable: 1
-  #   service:
-  #     annotations: {}
-  #     # List of IP ranges that are allowed to access the load balancer (if supported)
-  #     loadBalancerSourceRanges: []
-  #     type: ClusterIP
-  #     # zipkinThriftPort :accept zipkin.thrift over compact thrift protocol
-  #     zipkinThriftPort: 5775
-  #     # compactPort: accept jaeger.thrift over compact thrift protocol
-  #     compactPort: 6831
-  #     # binaryPort: accept jaeger.thrift over binary thrift protocol
-  #     binaryPort: 6832
-  #     # samplingPort: (HTTP) serve configs, sampling strategies
-  #     samplingPort: 5778
-
-  # collector:
-  #   enabled: true
-  #   annotations: {}
-  #   image: jaegertracing/jaeger-collector
-  #   # tag: 1.22
-  #   imagePullSecrets: []
-  #   pullPolicy: IfNotPresent
-  #   dnsPolicy: ClusterFirst
-  #   extraEnv: []
-  #   cmdlineParams: {}
-  #   basePath: /
-  #   replicaCount: 1
-  #   autoscaling:
-  #     enabled: false
-  #     minReplicas: 2
-  #     maxReplicas: 10
-  #     # targetCPUUtilizationPercentage: 80
-  #     # targetMemoryUtilizationPercentage: 80
-  #   service:
-  #     annotations: {}
-  #     # The IP to be used by the load balancer (if supported)
-  #     loadBalancerIP: ''
-  #     # List of IP ranges that are allowed to access the load balancer (if supported)
-  #     loadBalancerSourceRanges: []
-  #     type: ClusterIP
-  #     # Cluster IP address to assign to service. Set to None to make service headless
-  #     clusterIP: ""
-  #     grpc:
-  #       port: 14250
-  #       # nodePort:
-  #     # httpPort: can accept spans directly from clients in jaeger.thrift format
-  #     http:
-  #       port: 14268
-  #       # nodePort:
-  #     # can accept Zipkin spans in JSON or Thrift
-  #     zipkin: {}
-  #       # port: 9411
-  #       # nodePort:
-  #     otlp:
-  #       grpc: {}
-  #         # port: 4317
-  #         # nodePort:
-  #       http: {}
-  #         # port: 4318
-  #         # nodePort:
+  
 
 
 grafana:
@@ -146,7 +83,7 @@ grafana:
             datasources:
                 - name: Prometheus
                   type: prometheus
-                  url: casa-mychart-prometheus-server.staging
+                  url: http://casa-mychart-prometheus-server.staging
                   access: proxy
                   isDefault: true
                   uid: prometheus
