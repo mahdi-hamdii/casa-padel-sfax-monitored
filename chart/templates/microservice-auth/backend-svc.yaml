@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-svc
+  name: backend-microservice-auth-svc
   namespace: staging
   annotations:
     prometheus.io/scrape: "true"
     prometheus.io/port : "3000"
 spec:
   selector:
-    app: backend
+    app: backend-microservice-auth
   type: LoadBalancer
   ports:
     - protocol: TCP
-      port: 3000
-      targetPort: {{ .Values.deployment.httpPort }}
+      port: {{ .Values.deployment.httpPort }}
+      targetPort: 3000

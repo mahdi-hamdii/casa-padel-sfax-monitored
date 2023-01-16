@@ -47,17 +47,17 @@ spec:
             - name: DATABASE_USER
               valueFrom:
                 secretKeyRef:
-                  name: backend-microservice-tournaments-secrets
+                  name: backend-secrets
                   key: DATABASE_USER
 
             - name: DATABASE_PASSWORD
               valueFrom: 
                 secretKeyRef:
-                  name: backend-microservice-tournaments-secrets
+                  name: backend-secrets
                   key: DATABASE_PASSWORD
 
             - name: DATABASE_LINK
               valueFrom:
                 configMapKeyRef:
-                  name: backend-microservice-tournaments-cm
+                  name: backend-cm
                   key: DATABASE_LINK
