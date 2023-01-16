@@ -14,5 +14,8 @@ dependencies:
 - name: redis
   repository: https://charts.bitnami.com/bitnami
   version: 17.4.2
-digest: sha256:74a5b65e00696bd47f47d94392e241a86a2328f60cc39f48acdd3f81bea07569
-generated: "2023-01-16T12:10:48.065454184+01:00"
+- name: argo-cd
+  repository: https://argoproj.github.io/argo-helm
+  version: 5.17.1
+digest: sha256:07e1b35abd58c31d46c854e185879117135075312ae566b5ec05d689c4e20b27
+generated: "2023-01-16T15:05:30.905571051+01:00"

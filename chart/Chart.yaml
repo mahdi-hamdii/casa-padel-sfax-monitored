@@ -25,5 +25,6 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami  
     version: 17.x.x  
 
-  # - name: promtail
-  #   repository: https://jaegertracing.github.io/helm-charts
+  - name: argo-cd
+    repository: https://argoproj.github.io/argo-helm
+    version: 5.x.x  
