@@ -9,7 +9,6 @@ metadata:
 spec:
   selector:
     app: backend-microservice-auth
-  type: LoadBalancer
   ports:
     - protocol: TCP
       port: {{ .Values.deployment.httpPort }}
